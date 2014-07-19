@@ -1,4 +1,5 @@
 $(document).ready(function(){
-  $('.title').click(function() {
-    $('.content').toggle('slow')});
+  $('.tutorial-section').click(function() {
+    $('.content',this).toggle('slow');
+    });
 });

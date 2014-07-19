@@ -22,7 +22,7 @@ class TutorialsController < ApplicationController
     File.open('app/views/tutorials/show.html.erb','w') do |file|
       sections.each_key do |key|
         file.write sections[key][:title]
-        file.write sections[key][:content]
+        #file.write sections[key][:content]
         #binding.pry
       end
     end

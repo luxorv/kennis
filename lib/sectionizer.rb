@@ -31,6 +31,7 @@ class Sectionizer
         doc = Nokogiri::XML('')                                           #creates a document where elements can be created(can be see as an html or xml document)
         title_content_div = Nokogiri::XML::Node.new 'div', doc            #creates a div to hold the title and the content
         title_div = Nokogiri::XML::Node.new 'div', doc                    #creates a div in the document
+        title_content_div['class'] = 'tutorial-section'                   #gives the div a class named tutorial-section
         content_div = title_div.clone                                     #copy title_div to content_div
         title_div['class'] = 'title'                                      #gives the content_div a class named title
         content_div['class'] = 'content'                  
@@ -59,14 +60,14 @@ end
 
 
 #binding.pry
-sec = Sectionizer.new 'http://www.readability.com/m?url=http://railsguides.net/advanced-rails-model-generators/'
-secciones = sec.sectionize
+#sec = Sectionizer.new 'http://www.readability.com/m?url=http://railsguides.net/advanced-rails-model-generators/'
+#secciones = sec.sectionize
 
 #binding.pry
 
-File.open("rails.html", "w") do |file|
-  file.write(secciones["2"][:title])
+#File.open("rails.html", "w") do |file|
+ # file.write(secciones["2"][:title])
   #file.write(secciones["2"])
-end
+#end
 
 
