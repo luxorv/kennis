@@ -1,0 +1,9 @@
+<%= button_tag "Add new tutorial", id: "addtutorial" %>
+
+<div id = "new-tutorial-form">
+  <%= form_tag("/tutorials", method: 'post') do %>
+    <h3> <%= label_tag(:url, "Insert Url") %> </h3><br>
+    <%= text_field_tag(:url) %>
+    <%= submit_tag("add") %>
+  <% end %>
+</div>

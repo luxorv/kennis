@@ -16,5 +16,6 @@
 //= require jquery_ujs
 //= require video
 //= require bigvideo
+//= require jquery-ui
 //= require turbolinks
 //= require_tree .
