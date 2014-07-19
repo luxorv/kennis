@@ -1,15 +1,33 @@
 class SessionsController < ApplicationController
 
+  EMAIL_REGEX = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/
+
   #instance methods
 
   def new
   end
 
   def create
-    user = User.authenticate(params[:username], params[:email], params[:password])
+
+    email = ''
+    username = ''
+
+    if params[:login_id] =~ EMAIL_REGEX
+      email = params[:login_id]
+    else
+      username = params[:login_id]
+    end
+
+    user = User.authenticate(
+      username,
+      email,
+      params[:password]
+    )
+
     if user
-      session[:user_id] = user.id
-      redirect_to root_url, :notice => "Logged in!"
+      session[:user] = user
+      cookies[:user] = user
+      redirect_to root_path, :notice => "Logged in!"
     else
       flash.now.alert = "Invalid email or password"
       render "new"

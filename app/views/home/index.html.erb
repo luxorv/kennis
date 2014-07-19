@@ -1,7 +1,14 @@
-<div>
-    <% @users.each do |user| %>
-        <ul>
-            <li><% user.username %></li>
-        </ul>
-    <% end %>
+<div class="main">
+    <div id="overview" class="box">
+        <h1>Kennis<span class="dimmed"><small>.</small>js</span></h1>
+        <h2>Tutorials made simple</h2>
+    </div>
 </div>
+<%= javascript_include_tag "application" %>
+<script>
+      $(function() {
+            var BV = new $.BigVideo();
+      BV.init();
+      BV.show("<%= request.protocol + request.host_with_port + asset_path('main-video.mp4') %>",{ambient:true});
+      });
+</script>

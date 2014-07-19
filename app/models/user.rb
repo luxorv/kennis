@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   # getters
-  attr_accessor :username, :email, :password, :password_confirmation
+  attr_accessor :password, :password_confirmation
 
   #scopes
 
@@ -31,9 +31,8 @@ class User < ActiveRecord::Base
 
   def self.authenticate(username, email, password)
     user = User.find_by_username(username) || User.find_by_email(email)
-    hashed_password = BCrypt::Engine.hash_secret(password, user.password_salt)
 
-    if user && user.password_hash == hashed_password
+    if user && user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
       user
     else
       nil

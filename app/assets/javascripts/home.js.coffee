@@ -1,3 +1,10 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+$('.main').addClass('animated zoomIn')
+
+doSomething = () ->
+    $('.main').addClass('animated zoomIn')
+    console.log('hey')
+
+$('.main').one(
+        'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+        doSomething
+)

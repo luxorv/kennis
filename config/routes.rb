@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   post 'register' => 'registration#create'
   get 'register' => 'registration#new'
 
-  resources :users
+  # resources :users
 
   resources :sessions
   # Example resource route with options:

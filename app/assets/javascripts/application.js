@@ -10,7 +10,11 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
+//= require jquery-1.7.2.min
+//= require jquery-ui-1.8.22.custom.min
+//= require jquery.imagesloaded.min
 //= require jquery_ujs
+//= require video
+//= require bigvideo
 //= require turbolinks
 //= require_tree .

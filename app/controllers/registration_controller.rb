@@ -7,7 +7,7 @@ class RegistrationController < ApplicationController
 
   def create
     user = RegistrationService.register(user_params)
-    redirect_to home_path(user)
+    redirect_to root_url(user)
   end
 
   private

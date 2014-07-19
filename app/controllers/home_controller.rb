@@ -1,14 +1,20 @@
 class HomeController < ApplicationController
 
-  before_action :check_logged_user
-
   def index
-    @users = @user || User.all
+    if logged_user?
+      @users = User.all
+    else
+      render new_session_path
+    end
   end
 
   private
 
-    def check_logged_user
-      @user = User.find(params[:user_id])
+    def logged_user?
+      container = session || cookies
+
+      if container[:user]
+        @user = current_user
+      end
     end
 end
