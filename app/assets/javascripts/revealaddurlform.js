@@ -14,5 +14,5 @@ dialog = $( "#dialog-form" ).dialog({
       allFields.removeClass( "ui-state-error" );
     }
 });
-$(document).ready(function() {
-document.getElementById('addtutorial').addEventListener("click", function() {document.write("carajo")});});
+//$(document).ready(function() {
+//document.getElementById('addtutorial').addEventListener("click", function() {document.write("carajo")});});

@@ -28,18 +28,21 @@ class Sectionizer
     @page_elements.each do |c|
       #binding.pry
       if c.class == Nokogiri::XML::Element and titles.include? c
-        doc = Nokogiri::XML('')                             #creates a document where elements can be created(can be see as an html or xml document)
-        title_div = Nokogiri::XML::Node.new 'div', doc      #creates a div in the document
-        content_div = title_div.clone                       #copy title_div to content_div
-        title_div['class'] = 'title'                        #gives the content_div a class named title
+        doc = Nokogiri::XML('')                                           #creates a document where elements can be created(can be see as an html or xml document)
+        title_content_div = Nokogiri::XML::Node.new 'div', doc            #creates a div to hold the title and the content
+        title_div = Nokogiri::XML::Node.new 'div', doc                    #creates a div in the document
+        content_div = title_div.clone                                     #copy title_div to content_div
+        title_div['class'] = 'title'                                      #gives the content_div a class named title
         content_div['class'] = 'content'                  
+        title_content_div << title_div 
+        title_content_div << content_div
         title_div << c
         #binding.pry
         section_number += 1
-        @sections[section_number.to_s] = {title: title_div, content: content_div}
+        @sections[section_number.to_s] = {title: title_content_div, content: title_content_div} 
       elsif @sections[section_number.to_s] != nil
-      #binding.pry
-      @sections[section_number.to_s][:content] << c
+        #binding.pry
+        @sections[section_number.to_s][:content].children[1] << c
       end
     end
     @sections
@@ -63,7 +66,7 @@ secciones = sec.sectionize
 
 File.open("rails.html", "w") do |file|
   file.write(secciones["2"][:title])
-  file.write(secciones["2"][:content])
+  #file.write(secciones["2"])
 end
 
 
