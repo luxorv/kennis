@@ -1,7 +1,7 @@
 $('.main').addClass('animated zoomIn')
 
 doSomething = () ->
-    $('.main').addClass('animated zoomIn')
+    $('.main').addClass('animated bounceInRight')
     console.log('hey')
 
 $('.main').one(
