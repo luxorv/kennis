@@ -1,0 +1,20 @@
+#editor { 
+    position: relative;
+    /*display : none; */
+    top: 0;
+    right: 000;
+    bottom: 0;
+    left: 500;
+    height: 300px;
+    width: 800px;
+}
+#todo-editor { 
+    position: absolute;
+    /*display : none;*/
+    top: 0;
+    right: 000;
+    bottom: 0;
+    left: 500;
+    height: 300px;
+    width: 0px;
+}
