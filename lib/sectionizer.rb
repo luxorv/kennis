@@ -18,7 +18,7 @@ class Sectionizer
   end
 
   def sectionize
-    
+
     section_number = 0
     titles = @page_elements.search(@title_tags)
 
