@@ -1,8 +1,4 @@
-<%= button_tag 'show editor', id: 'editor-button' %> 
-
-
-
-<div class="tutorial-section">
+<%= button_tag 'Show editor', id: 'editor-button' %><div class="tutorial-section">
   <div class="title">
     <h2 id="basic-usage">Basic usage</h2>
   </div>
@@ -159,18 +155,25 @@ timestamp
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
-</div>
-
-<div id='todo-editor'>
-  <div id="editor">function foo(items) {
-    var x = "All this is syntax highlighted";
-    return x;
-    }
-  </div>
-</div>
-
-<script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/javascript");
-</script>
+</div><div id="todo-editor">
+                     <div id="editor">function foo(items) {
+                        var x = "All this is syntax highlighted"
+                        return x;
+                       }</div><br>
+                       <%=form_tag "/tutorials", method: "post"  do %> 
+                          <%= label_tag :input %><br>
+                          <%= text_area_tag :input %><br>
+                          <%= label_tag :output %><br>
+                          <%= text_area_tag :output %><br>
+                          <%= submit_tag "Execute", id: "code-submit"%>
+                       <% end %>
+                  </div>
+                  <script>
+                    var editor = ace.edit("editor");
+                    editor.setOptions({
+                      autoScrollEditorIntoView: true,
+                      theme: "ace/theme/monokai",
+                      showPrintMargin: false,
+                      mode: "ace/mode/javascript"
+                    });
+                  </script>

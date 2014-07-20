@@ -1,3 +1,10 @@
+/*.tutorial-section {
+    overflow: scroll;
+}*/
+html {
+    height: 20000px;
+    overflow: auto;
+}
 .content {
  display: none;
 }
