@@ -1,0 +1,14 @@
+<div class="main">
+    <div id="overview" class="box">
+        <h1 id="big-title">Kennis</h1>
+        <h2 id="subtitle">Tutorials made simple</h2>
+    </div>
+</div>
+<%= javascript_include_tag "application" %>
+<script>
+      $(function() {
+            var BV = new $.BigVideo();
+      BV.init();
+      BV.show("<%= request.protocol + request.host_with_port + asset_path('main-video.mp4') %>",{ambient:true});
+      });
+</script>
