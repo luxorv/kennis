@@ -25,18 +25,6 @@ class TutorialsController < ApplicationController
     render 'show'
   end
   
-  def executecode
-    binding.pry
-    #render plain: params 
-   # @output = "La vaca"
-    #respond_to do |format|
-      #format.js      #format.text {render text: @output }
-      #format.html {render 'show'}
-      #format.xml { render xml:  @output }
-     # end
-  end
-  
-
   private
 
   def sectionize_tutorial
