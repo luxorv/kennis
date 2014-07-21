@@ -4,7 +4,7 @@ $(document).ready(function(){
       autoScrollEditorIntoView: true,
       theme: "ace/theme/monokai",
       showPrintMargin: false,
-      mode: "ace/mode/ruby"
+      mode: "ace/mode/c_cpp"
     });
   
   $('#code-submit').click(function(){

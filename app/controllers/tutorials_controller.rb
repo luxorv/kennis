@@ -70,22 +70,26 @@ class TutorialsController < ApplicationController
 
   def execute code, input
     # files extentions and execution commands
-    language = :ruby
-    languages = {cpp: ['.cpp',"g++ program.cpp -o program.out"], 
+    language = :cpp
+    languages = {cpp: ['.cpp',"g++ tmp/programs/program.cpp -o tmp/programs/program.out"], 
                  ruby: ['.rb', "ruby tmp/programs/program.rb"], 
-                 python: ['.py', "python program.py"], 
+                 python: ['.py', "python tmp/programs/program.py"], 
                  c: ['.c', "gcc program.c -o a.out"] }
     
     if languages.has_key? language
       File.open("tmp/programs/program#{languages[language][0]}", 'w') do |file|
         file.write code
       end
-      puts("#{`g++ program.cpp -o program.out tmp/programs/program."#{languages[language][0]}"`}") if languages[language][0] == '.cpp'
+      puts(`g++ tmp/programs/program.cpp -o tmp/programs/program.out`) if languages[language][0] == '.cpp'
        end
     
-    o,e,s = Open3.capture3('./tmp/programs/program.out', stdin_data: input) if languages[language][0] == '.cpp'
-    o,e,s = Open3.capture3("#{languages[language][1]}", stdin_data: input)
-    binding.pry
+    if languages[language][0] == '.cpp'
+      o,e,s = Open3.capture3('./tmp/programs/program.out', stdin_data: input)
+      #binding.pry
+    else
+      o,e,s = Open3.capture3("#{languages[language][1]}", stdin_data: input)
+    end
+    #binding.pry
     return o 
   end
 end
