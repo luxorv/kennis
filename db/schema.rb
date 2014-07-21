@@ -11,7 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140718161031) do
+ActiveRecord::Schema.define(version: 20140720213734) do
+
+  create_table "archivements", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "badge_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "archivements", ["badge_id"], name: "index_archivements_on_badge_id", using: :btree
+  add_index "archivements", ["user_id"], name: "index_archivements_on_user_id", using: :btree
+
+  create_table "badges", force: true do |t|
+    t.string   "name"
+    t.integer  "points"
+    t.string   "topic"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "name",          null: false
@@ -21,6 +39,9 @@ ActiveRecord::Schema.define(version: 20140718161031) do
     t.string   "password_salt", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "level"
+    t.integer  "points"
+    t.string   "image_url"
   end
 
 end

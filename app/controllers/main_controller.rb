@@ -1,11 +1,16 @@
-class HomeController < ApplicationController
+class MainController < ApplicationController
+  layout "main"
 
   def index
+
     @user = User.new
 
-    if logged_user?
-      redirect_to "/#{current_user.username}"
+    if !logged_user?
+      redirect_to '/'
     end
+  end
+
+  def profile
   end
 
 
@@ -18,6 +23,5 @@ class HomeController < ApplicationController
         @user = current_user
       end
     end
-
 
 end

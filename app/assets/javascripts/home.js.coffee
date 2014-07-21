@@ -1,10 +1,14 @@
-$('.main').addClass('animated zoomIn')
+$(document).ready (() ->
+    $('#regis-div').hide()
 
-doSomething = () ->
-    $('.main').addClass('animated bounceInRight')
-    console.log('hey')
+    $('#register-btn').click(() ->
+        $('#login-div').hide()
+        $('#regis-div').show()
+    )
 
-$('.main').one(
-        'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-        doSomething
+    $('#login-btn').click(() ->
+        $('#login-div').show()
+        $('#regis-div').hide()
+    )
+
 )

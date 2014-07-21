@@ -2,6 +2,12 @@ class User < ActiveRecord::Base
   # getters
   attr_accessor :password, :password_confirmation
 
+  # relations
+
+  has_many :tutorials
+  has_many :archivements
+  has_many :badges, through: :archivements
+
   #scopes
 
   # callbacks
@@ -25,6 +31,10 @@ class User < ActiveRecord::Base
       self.password_salt = BCrypt::Engine.generate_salt
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
+  end
+
+  def to_param
+    username
   end
 
   # class methods

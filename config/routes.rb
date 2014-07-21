@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   # resources :users
 
   resources :sessions
+
+  get '/:username' => 'users#show', :constraints => { :username => /[a-zA-Z0-9_]+/ }
+
   # Example resource route with options:
   #   resources :products do
   #     member do

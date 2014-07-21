@@ -1,0 +1,31 @@
+<div id="regis-div">
+<h1>Register</h1>
+
+<%= form_tag register_path, :role => 'form' do %>
+    <div class="form-group">
+        <%= label_tag :name, nil, :class => 'lead' %>
+        <%= text_field_tag :name, nil, :class => 'form-control transparent'%>
+    <div/>
+
+    <div class="form-group">
+        <%= label_tag :username, nil, :class => 'lead' %>
+        <%= text_field_tag :username, nil, :class => 'form-control transparent' %>
+    </div>
+    <div class="form-group">
+        <%= label_tag :email, nil, :class => 'lead' %>
+        <%= text_field_tag :email, nil, :class => 'form-control transparent' %>
+    </div>
+    <div class="form-group">
+        <%= label_tag :password, nil, :class => 'lead' %>
+        <%= password_field :password, nil, :class => 'form-control transparent' %>
+    </div>
+    <div class="form-group">
+        <%= label_tag :password_confirmation, nil, :class => 'lead' %>
+        <%= password_field_tag :password_confirmation, nil, :class => 'form-control transparent' %>
+    </div>
+    <div class="form-group">
+        <%= submit_tag 'Register', :class => 'btn transparent' %>
+        <div class ='btn transparent' id="login-btn">Log In</div>
+    </div>
+<% end %>
+</div>

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<div id="login-div">
+    <h1>Log in / Register</h1>
+
+<%= form_tag sessions_path, :role => "form" do %>
+    <div class="form-group">
+        <%= label_tag 'Email or Username', nil, :class => 'lead' %><br />
+        <%= text_field_tag 'login_id', nil, :class => "form-control transparent" %>
+    </div>
+    <div class="form-group">
+        <%= label_tag :password, nil, :class => 'lead' %>
+        <%= password_field_tag :password, nil, :class => 'form-control transparent' %>
+    </div>
+    <div class="form-group">
+        <%= submit_tag "Log in", :class => 'btn transparent' %>
+        <div id="register-btn" class ='btn transparent'>Register</div>
+    </div>
+    <% end %>
+</div>

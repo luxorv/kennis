@@ -21,6 +21,10 @@ class Crawler
 
     #binding.pry
   end
+
+  def page_title
+    @page.search('#rdb-article-title').search('h1')
+  end
 end
 
 

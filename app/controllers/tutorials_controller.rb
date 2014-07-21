@@ -1,10 +1,12 @@
 class TutorialsController < ApplicationController
   require 'sectionizer'
-  
+
   def index
+    @tutorials = Tutorials.where(user_id: current_user.id)
   end
 
   def show
+    @tutorial = Tutorial.find(params[:tutorial_id])
   end
 
   def create
@@ -27,5 +29,5 @@ class TutorialsController < ApplicationController
       end
     end
   end
-    
+
 end

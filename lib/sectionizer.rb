@@ -1,12 +1,14 @@
 require_relative 'crawler'
 
 class Sectionizer
+
   def initialize url
     crawl = Crawler.new url
     #obtain the children of the page tutorial container(which can be an <article>, <div>, <section>) so, we can iterate them
     @page_elements = crawl.extract_readable_info_from_page.children 
     @sections = {}                                # will save the tutorial as a set of titles and content organized by keys and values
     @title_tags = get_titles_tag
+    @page = crawl.page_title
   end
 
   def get_titles_tag
@@ -43,6 +45,7 @@ class Sectionizer
         @sections[section_number.to_s][:content].children[1] << c
       end
     end
+    @sections[:title] = @page_title
     @sections
   end
 end

@@ -17,9 +17,13 @@
  *= require bootstrap.min
  *= require bootstrap-theme
  *= require bootstrap-theme.min
- *= require home
- *= require sessions
- *= require users
+ *= require main.css.scss
+ *= require tutorialcontent
+ *= require tutorials
+ *= require modelform
+ *= require modelform
+ *= require modelform
+ 
  */
 @font-face {
     font-family: HelveticaLight;

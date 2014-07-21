@@ -25,9 +25,10 @@ class SessionsController < ApplicationController
     )
 
     if user
-      session[:user] = user
+      session[:username] = user.username
       cookies[:user] = user
-      redirect_to root_path, :notice => "Logged in!"
+
+      redirect_to "/#{user.username}"
     else
       flash.now.alert = "Invalid email or password"
       render "new"
