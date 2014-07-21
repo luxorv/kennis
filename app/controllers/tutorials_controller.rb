@@ -10,7 +10,7 @@ class TutorialsController < ApplicationController
     #@output = execute params[:code], params[:input]
     
     respond_to do |format|
-      format.js{ @output = execute params[:code], params[:input] }
+      format.js{ @output = execute params[:code], params[:input], params[:language] }
       format.html
       #format.text {render text: @output }
       #format.html {render text: @output}
@@ -53,6 +53,13 @@ class TutorialsController < ApplicationController
         #binding.pry
       end
       file.write('<div id="todo-editor">
+                     <%= label_tag "Select Language: " %>
+                     <select id="lang">
+                        <option value="c_cpp">C/C++</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                     </select> 
                      <div id="editor">function foo(items) {
                         var x = "All this is syntax highlighted"
                         return x;
@@ -68,10 +75,10 @@ class TutorialsController < ApplicationController
     end
   end
 
-  def execute code, input
+  def execute code, input, language
     # files extentions and execution commands
-    language = :cpp
-    languages = {cpp: ['.cpp',"g++ tmp/programs/program.cpp -o tmp/programs/program.out"], 
+    language = language.to_sym
+    languages = {c_cpp: ['.cpp',"g++ tmp/programs/program.cpp -o tmp/programs/program.out"], 
                  ruby: ['.rb', "ruby tmp/programs/program.rb"], 
                  python: ['.py', "python tmp/programs/program.py"], 
                  c: ['.c', "gcc program.c -o a.out"] }
@@ -81,8 +88,8 @@ class TutorialsController < ApplicationController
         file.write code
       end
       puts(`g++ tmp/programs/program.cpp -o tmp/programs/program.out`) if languages[language][0] == '.cpp'
-       end
-    
+    end
+    #binding.pry
     if languages[language][0] == '.cpp'
       o,e,s = Open3.capture3('./tmp/programs/program.out', stdin_data: input)
       #binding.pry

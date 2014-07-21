@@ -7,17 +7,16 @@ $(document).ready(function(){
       mode: "ace/mode/c_cpp"
     });
   
+  $('#lang').change(function(){
+    editor.getSession().setMode("ace/mode/"+$('#lang').val());
+  });  
+  
   $('#code-submit').click(function(){
-    
-    console.log(editor.getValue());
-   
-    //$.post("/tutorials/execute_code",{code: editor.getValue()},function(data){alert(data)});
-    //$.get("/tutorials/execute_code", function( data ) {alert(data ); });
     var imput = $('#input').val();
     $.ajax({
       type: "GET",
       url: "/tutorials/executecode",
-      data: {code: editor.getValue(), input: imput },
+      data: {code: editor.getValue(), input: imput, language: $('#lang').val()},
       //dataType: "text",
       //success: function(response){alert(response); } 
     });
