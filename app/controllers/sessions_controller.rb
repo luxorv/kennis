@@ -24,6 +24,8 @@ class SessionsController < ApplicationController
       params[:password]
     )
 
+    logger.debug "#### USER LOGIN #{params.to_s} ####"
+
     if user
       session[:username] = user.username
       cookies[:user] = user
@@ -31,7 +33,7 @@ class SessionsController < ApplicationController
       redirect_to "/#{user.username}"
     else
       flash.now.alert = "Invalid email or password"
-      render "new"
+      redirect_to "/"
     end
   end
 

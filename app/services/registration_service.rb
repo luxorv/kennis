@@ -6,6 +6,7 @@ class RegistrationService
       new_user.username = user[:username]
       new_user.name = user[:name]
       new_user.email = user[:email]
+      new_user.password = user[:password]
       new_user.save
     end
   end
