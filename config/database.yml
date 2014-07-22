@@ -14,9 +14,8 @@ default: &default
   encoding: utf8
   pool: 5
   username: root
-  password: test
-  socket: /tmp/mysql.sock # /var/run/mysqld/mysqld.sock # 
-
+  password: aeiouA123456789
+  socket: /var/run/mysqld/mysqld.sock #/tmp/mysql.sock 
 development:
   <<: *default
   database: kennis_development

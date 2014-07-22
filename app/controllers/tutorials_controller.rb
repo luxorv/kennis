@@ -4,11 +4,11 @@ class TutorialsController < ApplicationController
   require 'open3'
 
   def index
-    @tutorials = Tutorials.where(user_id: current_user.id)
+    #@tutorials = Tutorials.where(user_id: current_user.id)
   end
 
   def show
-    @tutorial = Tutorial.find(params[:tutorial_id])
+    #@tutorial = Tutorial.find(params[:tutorial_id])
 
     #@output = execute params[:code], params[:input]
     respond_to do |format|
@@ -38,7 +38,7 @@ class TutorialsController < ApplicationController
       
       sections.each_key do |key|
         #binding.pry
-        file.write(sections[key][:title])
+        file.write(sections[key][:title]) if key.is_a? String
         #file.write sections[key][:content]
         #binding.pry
       end

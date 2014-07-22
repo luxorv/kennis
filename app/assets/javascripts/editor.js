@@ -1,4 +1,4 @@
-/*$(document).ready(function(){
+$(document).ready(function(){
   var editor = ace.edit("editor");
     editor.setOptions({
       autoScrollEditorIntoView: true,
@@ -21,4 +21,4 @@
       //success: function(response){alert(response); }
     });
   });
-});*/
+});
