@@ -1,4 +1,4 @@
-$(document).ready(function(){
+/*$(document).ready(function(){
   var editor = ace.edit("editor");
     editor.setOptions({
       autoScrollEditorIntoView: true,
@@ -6,11 +6,11 @@ $(document).ready(function(){
       showPrintMargin: false,
       mode: "ace/mode/c_cpp"
     });
-  
+
   $('#lang').change(function(){
     editor.getSession().setMode("ace/mode/"+$('#lang').val());
-  });  
-  
+  });
+
   $('#code-submit').click(function(){
     var imput = $('#input').val();
     $.ajax({
@@ -18,7 +18,7 @@ $(document).ready(function(){
       url: "/tutorials/executecode",
       data: {code: editor.getValue(), input: imput, language: $('#lang').val()},
       //dataType: "text",
-      //success: function(response){alert(response); } 
+      //success: function(response){alert(response); }
     });
   });
-});
+});*/

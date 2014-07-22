@@ -32,13 +32,13 @@ ActiveRecord::Schema.define(version: 20140720213734) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "password_hash"
-    t.string   "password_salt"
+    t.string   "name",          null: false
+    t.string   "email",         null: false
+    t.string   "username",      null: false
+    t.string   "password_hash", null: false
+    t.string   "password_salt", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "username"
     t.integer  "level"
     t.integer  "points"
     t.string   "image_url"
