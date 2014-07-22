@@ -34,20 +34,27 @@
         <!-- /.container -->
     </nav>
 
+    
     <!-- Intro Header -->
     <header class="intro">
+        <div id="user-info">
+            <p>Level: <%= @user.level %></p>        
+            <p>Points: <%= @user.points %></p>
+            
+        </div>        
         <div class="intro-body">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <p class="intro-text">Your Status<br>Go Here</p>
-                        <a href="#about" class="btn btn-circle page-scroll">
+
+                            <a href="#about" class="btn btn-circle page-scroll">
                             <i class="fa fa-angle-double-down animated"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
+
     </header>
 
     <!-- About Section -->

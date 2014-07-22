@@ -17,7 +17,7 @@
  *= require bootstrap.min
  *= require bootstrap-theme
  *= require bootstrap-theme.min
- *= require main.css.scss
+ *= require main.css
  
  */
 @font-face {

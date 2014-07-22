@@ -1,8 +1,8 @@
 class CreateArchivements < ActiveRecord::Migration
   def change
     create_table :archivements do |t|
-      t.references :user, index: true
-      t.references :badge, index: true
+      t.integer :user_id
+      t.integer :badge_id
 
       t.timestamps
     end

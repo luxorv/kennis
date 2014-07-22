@@ -11,10 +11,13 @@ html {
     height: 100%;
 }
 
-/* Create the animation blocks */
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+#user-info
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: solid 1px white;
 }
 
 #profile-pic

@@ -1,6 +1,3 @@
 class Badge < ActiveRecord::Base
-
-  has_many :archivements
-  has_many :users, through: :archivements
-
+  has_and_belongs_to_many :archivements
 end

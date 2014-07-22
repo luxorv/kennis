@@ -3,10 +3,8 @@ class User < ActiveRecord::Base
   attr_accessor :password, :password_confirmation
 
   # relations
-
-  has_many :tutorials
-  has_many :archivements
-  has_many :badges, through: :archivements
+  
+  has_and_belongs_to_many :archivements
 
   #scopes
 
