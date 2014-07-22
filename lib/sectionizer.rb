@@ -9,6 +9,7 @@ class Sectionizer
     @sections = {}                                # will save the tutorial as a set of titles and content organized by keys and values
     @title_tags = get_titles_tag
     @page = crawl.page_title
+    @title = crawl.title
   end
 
   def get_titles_tag
@@ -20,12 +21,12 @@ class Sectionizer
   end
 
   def sectionize
-
     section_number = 0
     titles = @page_elements.search(@title_tags)
 
     @page_elements.each do |c|
       #binding.pry
+      
       if c.class == Nokogiri::XML::Element and titles.include? c
         doc = Nokogiri::XML('')                                           #creates a document where elements can be created(can be see as an html or xml document)
         title_content_div = Nokogiri::XML::Node.new 'div', doc            #creates a div to hold the title and the content
@@ -41,11 +42,12 @@ class Sectionizer
         section_number += 1
         @sections[section_number.to_s] = {title: title_content_div, content: title_content_div} 
       elsif @sections[section_number.to_s] != nil
-        #binding.pry
+       #binding.pry
         @sections[section_number.to_s][:content].children[1] << c
       end
     end
-    @sections[:title] = @page_title
+    @sections[:title] = @title
+    #binding.pry
     @sections
   end
 end

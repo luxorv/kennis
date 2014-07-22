@@ -28,6 +28,21 @@ ActiveRecord::Schema.define(version: 20140722070135) do
     t.datetime "updated_at"
   end
 
+  create_table "tutorials", force: true do |t|
+    t.text     "content"
+    t.string   "title"
+    t.string   "difficulty"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tutorials_users", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "tutorial_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", force: true do |t|
     t.string   "name",          null: false
     t.string   "email",         null: false
