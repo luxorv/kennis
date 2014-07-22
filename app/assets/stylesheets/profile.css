@@ -18,11 +18,6 @@
  *= require bootstrap-theme
  *= require bootstrap-theme.min
  *= require main.css.scss
- *= require tutorialcontent
- *= require tutorials
- *= require modelform
- *= require modelform
- *= require modelform
  
  */
 @font-face {
