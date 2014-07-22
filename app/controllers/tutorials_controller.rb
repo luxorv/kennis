@@ -4,8 +4,9 @@ class TutorialsController < ApplicationController
   require 'sectionizer'
   require 'open3'
 
+
   def index
-    #@tutorials = Tutorials.where(user_id: current_user.id)
+    @tutorials = Tutorials.find('name like ?', "#{params[:search]}")
   end
 
   def show
@@ -30,7 +31,6 @@ class TutorialsController < ApplicationController
     doc = Nokogiri::HTML f
     #binding.pry
     f.close
-    binding.pry 
     @tutorial.content = doc.content
     @tutorial.title = doc.search('#rdb-article-title').text
     @tutorial.save

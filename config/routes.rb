@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :tutorials
   get '/tutorials/executecode', to: 'tutorials#executecode'  
   # The priority is based upon order of creation: first created -> highest priority.
+  get 'tutorials/autocomplete_title'
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"

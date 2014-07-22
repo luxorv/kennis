@@ -1,0 +1,10 @@
+<button class="btn transparent" id="add-new" style="border: solid 1px white;">Add new tutorial</button>
+<div id = "new-tutorial-form">
+  <%= form_tag("/tutorials", method: 'post', :role => "form") do %>
+    <div class="form-group">
+    <p> <%= label_tag(:url, "Insert tutorial url") %> </p><br>
+    <%= text_field_tag(:url, nil, :class => 'form-control transparent') %>
+    <%= button_tag "Add", id: "addtutorial", :class => 'btn transparent', :style => 'border: solid 1px white;' %>
+  </div>
+  <% end %>
+</div>

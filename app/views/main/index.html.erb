@@ -9,8 +9,12 @@
                     <%= image_tag @user.image_url, :id => 'profile-pic', :class => 'img-circle' %>
                     <%= @user.username %>
                 </a>
-            </div>
 
+            </div>
+                <%= form_tag tutorials_path, :id => 'demo-b', :remote => true do %>
+                    <%= text_field_tag :search, params[:search], :id=>'search', :class => 'transparent', :type => 'search', :data => { autocomplete_source: tutorials_path }, size: 30 %>
+                <% end %>
+                
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                 <ul class="nav navbar-nav">
@@ -38,9 +42,11 @@
     <!-- Intro Header -->
     <header class="intro">
         <div id="user-info">
-            <p>Level: <%= @user.level %></p>        
-            <p>Points: <%= @user.points %></p>
-            
+
+            <div id="user-info">
+                <p>Level: <%= @user.level %></p>        
+                <p>Points: <%= @user.points %></p>
+            </div>
         </div>        
         <div class="intro-body">
             <div class="container">
@@ -59,9 +65,19 @@
 
     <!-- About Section -->
     <section id="about" class="container content-section text-center">
+        <%= render 'tutorials/show' %>
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <p>Your tutorials here</p>
+                <ul id="tutorials" class="list-inline list-unstyled">
+                    <% @user.tutorials do |tutorial| %>
+                        <li>
+                            <a class="tutorial">
+                                <img class="img-responsive img-thumbnail" src="">
+                                <%= tutorial.title %>
+                            </a>
+                        </li>
+                    <% end %>
+                </ul>
             </div>
         </div>
     </section>
@@ -71,7 +87,16 @@
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <p>Your Badges here</p>
+                    <ul id="badges" class="list-inline list-unstyled">
+                    <% @user.badges do |badge| %>
+                        <li>
+                            <div class="badge">
+                                <img class="img-responsive img-thumbnail" src=<%= badge.image_url %>/>
+                                <%= badge.name %>
+                            </div>
+                        </li>
+                    <% end %>
+                </ul>
                 </div>
             </div>
         </div>

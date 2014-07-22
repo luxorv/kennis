@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(window).load(function(){
   var editor = ace.edit("editor");
     editor.setOptions({
       autoScrollEditorIntoView: true,
