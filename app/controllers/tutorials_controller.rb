@@ -1,5 +1,6 @@
 class TutorialsController < ApplicationController
 
+  require 'mechanize'
   require 'sectionizer'
   require 'open3'
 
@@ -22,12 +23,26 @@ class TutorialsController < ApplicationController
   end
 
   def create
+    @tutorial = Tutorial.new
     #render plain: params
     sectionize_tutorial
+    f = File.open('app/views/tutorials/show.html.erb')
+    doc = Nokogiri::HTML f
+    #binding.pry
+    f.close
+    binding.pry 
+    #@tutorial.content = doc.content
+    #@tutorial.title = doc.search('#rdb-article-title')
+    #@tutorial.save
+      
     render 'show'
   end
   
   private
+
+  def tutorial_params
+    params.permit(:url)
+  end
 
   def sectionize_tutorial
     page = Sectionizer.new params[:url]
@@ -35,7 +50,8 @@ class TutorialsController < ApplicationController
  
     File.open('app/views/tutorials/show.html.erb', 'w') do |file|
       file.write "<%= button_tag 'Show editor', id: 'editor-button' %>"
-      
+      file.write sections[:title] 
+      #binding.pry
       sections.each_key do |key|
         #binding.pry
         file.write(sections[key][:title]) if key.is_a? String

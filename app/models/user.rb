@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
   # relations
 
-  has_many :tutorials
+  has_and_belongs_to_many :tutorials
   has_many :archivements
   has_many :badges, through: :archivements
 
