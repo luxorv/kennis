@@ -4,10 +4,10 @@ require 'pry'
 class Crawler
   attr_reader :title
   def initialize an_url
+   url = "http://www.readability.com/m?url=#{an_url}"
    agent = Mechanize.new
-   @page = agent.get(an_url)
+   @page = agent.get(url)
    @title = @page.search('#rdb-article-title')
-   #binding.pry
   end
 
   def extract_readable_info_from_page
@@ -29,5 +29,3 @@ class Crawler
     @page.search('#rdb-article-title').search('h1')
   end
 end
-
-

@@ -9,6 +9,8 @@ class UsersController < ApplicationController
     @some_str = "asssss"
     if session[:username] == params[:username]
       @user = User.find_by_username(params[:username])
+      @tutos = @user.tutorials
+      @badges = @user.badges
       render 'main/index'
     else
       redirect_to '/'

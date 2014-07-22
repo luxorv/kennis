@@ -39,6 +39,9 @@ class User < ActiveRecord::Base
 
   def self.authenticate(username, email, password)
     user = User.find_by_username(username) || User.find_by_email(email)
+    if !user
+      return nil
+    end
     user.password = password
     user.encrypt_password
 

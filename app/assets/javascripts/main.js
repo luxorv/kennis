@@ -18,3 +18,12 @@ $(function() {
         event.preventDefault();
     });
 });
+
+$(function() {
+    $('#show').hide();
+
+    $('#add-new').click(function() {
+
+        $('#show').toggle();
+    });
+});

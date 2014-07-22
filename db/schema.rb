@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140722102011) do
+ActiveRecord::Schema.define(version: 20140722131157) do
 
   create_table "archivements", force: true do |t|
     t.integer  "user_id"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20140722102011) do
     t.string   "topic"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_url"
   end
 
   create_table "badges_users", force: true do |t|
@@ -33,13 +34,6 @@ ActiveRecord::Schema.define(version: 20140722102011) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "badge_id"
-  end
-
-  create_table "search_suggestions", force: true do |t|
-    t.string   "term"
-    t.integer  "popularity"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "tutorials", force: true do |t|

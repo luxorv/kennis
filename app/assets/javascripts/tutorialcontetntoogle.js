@@ -5,14 +5,14 @@ $(document).ready(function(){
 
   $('#editor-button').toggle(function() {
       $('.tutorial-section').animate({
-          width: '-=1300px'
+          width: '-=800px'
       });
       $('#todo-editor').animate({
           width: '+=800px'
       });
   },function(){
       $('.tutorial-section').animate({
-          width: '+=1300px'
+          width: '+=800px'
       });
       $('#todo-editor').animate({
           width: '-=800px'

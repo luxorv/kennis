@@ -6,14 +6,11 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand page-scroll" href="#page-top">
-                    <%= image_tag @user.image_url, :id => 'profile-pic', :class => 'img-circle' %>
+                    <img class="img-circle" id="profile-pic" src="assets/<%= @user.image_url %>"/>
                     <%= @user.username %>
                 </a>
 
             </div>
-                <%= form_tag tutorials_path, :id => 'demo-b', :remote => true do %>
-                    <%= text_field_tag :search, params[:search], :id=>'search', :class => 'transparent', :type => 'search', :data => { autocomplete_source: tutorials_path }, size: 30 %>
-                <% end %>
                 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
@@ -29,7 +26,7 @@
                         <a class="page-scroll" href="#download">Badges</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Log Out</a>
+                        <a class="page-scroll" href="/sessions/destroy">Log Out</a>
                     </li>
                 </ul>
             </div>
@@ -41,13 +38,6 @@
     
     <!-- Intro Header -->
     <header class="intro">
-        <div id="user-info">
-
-            <div id="user-info">
-                <p>Level: <%= @user.level %></p>        
-                <p>Points: <%= @user.points %></p>
-            </div>
-        </div>        
         <div class="intro-body">
             <div class="container">
                 <div class="row">
@@ -62,19 +52,20 @@
         </div>
 
     </header>
-
     <!-- About Section -->
     <section id="about" class="container content-section text-center">
-        <%= render 'tutorials/show' %>
+        <button class="btn transparent" id="add-new" style="border: solid 1px white;">Add new tutorial</button>
+        <div id="show"><%= render 'tutorials/show' %></div>
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <ul id="tutorials" class="list-inline list-unstyled">
-                    <% @user.tutorials do |tutorial| %>
+
+                <ul id="badges" class="list-inline list-unstyled">
+                    <% @tutos.each do |tutorial| %>
                         <li>
-                            <a class="tutorial">
+                            <div class="tutorial">
                                 <img class="img-responsive img-thumbnail" src="">
-                                <%= tutorial.title %>
-                            </a>
+                                <%= link_to tutorial.title, tutorial %>
+                            </div>
                         </li>
                     <% end %>
                 </ul>
@@ -88,11 +79,10 @@
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
                     <ul id="badges" class="list-inline list-unstyled">
-                    <% @user.badges do |badge| %>
+                    <% @badges.each do |badge| %>
                         <li>
                             <div class="badge">
-                                <img class="img-responsive img-thumbnail" src=<%= badge.image_url %>/>
-                                <%= badge.name %>
+                                <img class="img-responsive transparent img-thumbnail" src="assets/<%= badge.image_url %>"/>
                             </div>
                         </li>
                     <% end %>
@@ -102,18 +92,9 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="container content-section text-center">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2">
-                <h2>????</h2>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer>
         <div class="container text-center">
-            <p>Copyright &copy; Your Website 2014</p>
+            <p>Copyright &copy; Kennis 2014</p>
         </div>
     </footer>

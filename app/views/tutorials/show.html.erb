@@ -1,160 +1,824 @@
-<%= button_tag 'Show editor', id: 'editor-button' %><h1 id="rdb-article-title" dir="ltr">Advanced Rails model generators</h1><div class="tutorial-section">
+<%= button_tag 'Show editor', :class => 'btn btn-primary', id: 'editor-button' %><h1 id="rdb-article-title" dir="ltr">Tutorial: Developing a PhoneGap Application</h1><div class="tutorial-section">
   <div class="title">
-    <h2 id="basic-usage">Basic usage</h2>
+    <h2>Setting Up</h2>
   </div>
   <div class="content">
-
-<p>Let&#x2019;s start with simple example:</p>
-
-<pre><code>$ rails g model user email
-</code></pre>
-
-<p>This command will generate <em>user</em> model with <em>email</em> field type of <em>string</em>, migration which creates <em>users</em> table, test for model and factory (if you have it). You are able to generate model with few fields like this:</p>
-
-<pre><code>$ rails g model user first_name last_name email
-</code></pre>
-
-<p>This example will generate yet model with 3 string fields: first_name, last_name and email.</p>
-
-<p>If you want to have model with different type of string pass type after field name following by : and type. Example:</p>
-
-<pre><code>$ rails g model user email age:integer
-</code></pre>
-
-<p>The whole list of available types:</p>
-
-<pre><code>integer
-primary_key
-decimal
-float
-boolean
-binary
-string
-text
-date
-time
-datetime
-timestamp
-</code></pre>
-
-<p>You are able to pass <em>&#x2013;option</em> parameter to generator. It will inherit generating class from passed name to achieve STI (sing table inheritance):</p>
-
-<pre><code>$ rails g model admin --parent user
-</code></pre>
-
-<p>This example generates model:</p>
-
-
-
-<p>Interesting fact that if you generate model in some scope passing model like <em>admin/user</em> or <em>Admin::User</em>:</p>
-
-<pre><code>$ rails g model admin/user
-</code></pre>
-
-<p>you will get generated model in scope <em>app/models/admin/user.rb</em>, defined scope <em>app/models/admin.rb</em> which is requred to define module. Let&#x2019;s see to the content of generated module:</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="k">module</span> <span class="nn">Admin</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">table_name_prefix</span>
-    <span class="s1">'admin_'</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-
-<p>It means that generated table name for <em>Admin::User</em> starts with prefix <em>admin_users</em>. This feature allows to have separated namespaced models as in rails code as in db schema. Very convenient and useful feature for multimodule applications for my opinion.</p>
+<ol>
+<li>Download the assets for the workshop <a href="https://github.com/ccoenraets/phonegap-workshop/archive/master.zip">here</a>.</li>
+<li>Unzip the file anywhere on your file system.</li>
+<li>If your code editor allows you to &#x201C;open a directory&#x201D;, open the phonegap-workshop-master directory.
+</li><li>Follow the instructions below.</li>
+</ol>
 
 </div>
 </div><div class="tutorial-section">
   <div class="title">
-    <h2 id="advanced-usage">Advanced usage</h2>
+    <h2>Part 1: Choosing a Local Storage Option</h2>
   </div>
   <div class="content">
 
-<p>Sometimes you have to automatically add index for columns in your migration. It&#x2019;s not a problem:</p>
-
-<pre><code>$ rails g model user email:index location_id:integer:index
-</code></pre>
-
-<p>Or uniq index:</p>
-
-<pre><code>$ rails g model user pseudo:string:uniq
-</code></pre>
-
-<p>Set limit for field of integer, string, text and binary fields:</p>
-
-<pre><code>$ rails generate model user pseudo:string{30}
-</code></pre>
-
-<p>Special syntax to generate decimal field with scale and precision:</p>
-
-<pre><code>$ rails generate model product 'price:decimal{10,2}'
-</code></pre>
-
-<blockquote>
-  <p>Pay attention that you have to wrap parameter <code>price:decimal{10,2}</code> to quotes. It&#x2019;s vital and you may have incorrect behavior of generator if you don&#x2019;t do it. Full explanation of this case is <a href="https://github.com/rails/rails/pull/12642">here</a>.</p>
-</blockquote>
-
-<p>You can combine any single curly brace option with the index options:</p>
-
-<pre><code>$ rails generate model user username:string{30}:uniq
-</code></pre>
-
-<p>And the last useful feature of generators - it&#x2019;s options to generate reference columns (fields which are used in rails as foreign keys):</p>
-
-<pre><code>$ rails generate model photo album:references
-</code></pre>
-
-<p>This command will generate <em>photos</em> table with integer field <em>album_id</em> and also it will add index for this field automatically. Make sure in it by looking at generated migration:</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">CreatePhotos</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
-  <span class="k">def</span> <span class="nf">change</span>
-    <span class="n">create_table</span> <span class="ss">:photos</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
-      <span class="n">t</span><span class="o">.</span><span class="n">references</span> <span class="ss">:album</span>
-
-      <span class="n">t</span><span class="o">.</span><span class="n">timestamps</span>
-    <span class="k">end</span>
-    <span class="n">add_index</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">:album_id</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-
-<p>For polymorphic reference use this syntax:</p>
-
-<pre><code>$ rails generate model product supplier:references{polymorphic}
-</code></pre>
-
-<p>Polymorphic reference with indexes:</p>
-
-<pre><code>$ rails generate model product supplier:references{polymorphic}:index
-</code></pre>
+<h4>Step 1: Explore different persistence mechansisms</h4>
+<p>Open the following files in <strong>phonegap-workshop-master/js/storage</strong>, and explore the different persistence stores they define:</p>
+<ol>
+<li>memory-store.js (MemoryStore)</li>
+<li>ls-store.js (LocalStorageStore)</li>
+<li>websql-store.js (WebSqlStore)</li>
+</ol>
+<h4>Step 2: Test the application with different persistence mechanisms</h4>
+<p>To change the local persistence mechanism for the application:</p>
+<ol>
+<li>In <strong>index.html</strong>: add a script tag for the corresponding .js file: <strong>memory-store.js</strong>, <strong>ls-store.js</strong>, or <strong>websql-store.js</strong>.</li>
+<li>In <strong>js/main.js</strong>: Instantiate the specific store in the initialize() function of the app object: <strong>MemoryStore</strong>, <strong>LocalStorageStore</strong>, or <strong>WebSqlStore</strong>.</li>
+<li>To test the application, open index.html in your browser, or simply double-click index.html on your file system. Type a few characters in the search box to search employees by name. Clicking an employee link doesn&#x2019;t produce any result at this time.</li>
+</ol>
 
 </div>
 </div><div class="tutorial-section">
   <div class="title">
-    <h2 id="conclusion">Conclusion</h2>
+    <h2>Part 2: Building with PhoneGap Build</h2>
   </div>
   <div class="content">
 
-<p>As you see there a lot of useful things in rails model generator which can decrease your developing time. Thank you for reading this trolling post but anyway I hope you find it useful because I didn&#x2019;t find any similar post or literature which describes rails model generator fully.</p>
+<ol>
+<li>If you don&#x2019;t already have one, create an account on <a href="http://build.phonegap.com">http://build.phonegap.com</a>.</li>
+<li>Click the &#x201C;new app&#x201D; button to create a new application on PhoneGap Build.</li>
+<li>Either point to a GitHub repository where you push your code for this workshop, or zip up your phonegap-workshop directory and upload it to PhoneGap Build.</li>
+<li>Click the <strong>Ready to build</strong> button.<br/>
 
-<p>PS. Foundation for this post was got from <a href="https://github.com/rails/rails/blob/master/railties/lib/rails/generators/rails/model/USAGE">this</a> rails description usage which is located only in sources of rails on github.</p>
+</li>
+<li>To upload your Apple developer certificate and your application provisioning profile:
+<ul>
+<li>Click the red iOS button.</li>
+<li>Select &#x201C;add a key&#x201D; in the &#x201C;No key selected&#x201D; dropdown.</li>
+<li>Provide a title for your developer certificate/provisioning profile combination (for example: EmployeeDirectory), select your developer certificate and provisioning profile, enter your developer certificate password, and click &#x201C;submit key&#x201D;.</li>
+<li>Go back to the list of apps. Click the iOS button for your application again. Select your newly added key in the iOS dropdown. The iOS build will start automatically.</li>
+</ul>
+</li>
+<li>When the build process completes, use a QR Code reader app to install the Employee Directory application on your device.</li>
+</ol>
+<p>To fine tune your build preferences:</p>
+<ol>
+<li>In the phonegap-workshop directory, create a file namedconfig.xml file defined as follows (make the necessary adjustments for id, author, etc.):
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;widget xmlns       = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "org.coenraets.employeedirectory"
+        versionCode = "10"
+        version     = "1.1.0"&gt;
 
-        
-      <pre><code class="ruby"><span class="k">module</span> <span class="nn">Admin</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">table_name_prefix</span>
-    <span class="s1">'admin_'</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre><pre><code class="ruby"><span class="k">class</span> <span class="nc">CreatePhotos</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
-  <span class="k">def</span> <span class="nf">change</span>
-    <span class="n">create_table</span> <span class="ss">:photos</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
-      <span class="n">t</span><span class="o">.</span><span class="n">references</span> <span class="ss">:album</span>
+    &lt;name&gt;Employee Directory&lt;/name&gt;
 
-      <span class="n">t</span><span class="o">.</span><span class="n">timestamps</span>
-    <span class="k">end</span>
-    <span class="n">add_index</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">:album_id</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
+    &lt;description&gt;
+        A simple employee directory application
+    &lt;/description&gt;
+
+    &lt;author href="http://coenraets.org" email="ccoenraets@gmail.com"&gt;
+        Christophe Coenraets
+    &lt;/author&gt;
+
+    &lt;feature name="http://api.phonegap.com/1.0/camera"/&gt;
+    &lt;feature name="http://api.phonegap.com/1.0/contacts"/&gt;
+    &lt;feature name="http://api.phonegap.com/1.0/file"/&gt;
+    &lt;feature name="http://api.phonegap.com/1.0/geolocation"/&gt;
+    &lt;feature name="http://api.phonegap.com/1.0/media"/&gt;
+    &lt;feature name="http://api.phonegap.com/1.0/network"/&gt;
+    &lt;feature name="http://api.phonegap.com/1.0/notification"/&gt;
+
+&lt;/widget&gt;
+</pre>
+</li>
+<li>If you used the GitHub approach, sync with GitHub and click the <strong>Update Code</strong> button in PhoneGap Build.<br/>
+If you used the zip file approach, zip up your phonegap-workshop directory and upload the new version to PhoneGap Build</li>
+</ol>
+
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 3: Using Native Notification</h2>
+  </div>
+  <div class="content">
+
+A default webview alert gives away the fact that your application is not native. In this section, we set up the basic infrastructure to display native alerts when the application is running on a device, and fall back to default browser alerts when running in the browser.
+<ol>
+<li>In index.html, add the following script tag (as the first script tag at the bottom of the body):
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script src="phonegap.js"&gt;&lt;/script&gt;
+</pre>
+<p>This instructs PhoneGap Build to inject a platform specific version of phonegap.js at build time. In other words, phonegaps.js doesn&#x2019;t need to be (and shouldn&#x2019;t be) present in your project folder.</p>
+</li>
+<li>In main.js, define a function named showAlert() inside the app object. If <em>navigator.notification</em> is available, use its alert() function. Otherwise, use the default browser alert() function.
+<pre class="brush: jscript; title: ; notranslate" title="">
+showAlert: function (message, title) {
+    if (navigator.notification) {
+        navigator.notification.alert(message, null, title, 'OK');
+    } else {
+        alert(title ? (title + ": " + message) : message);
+    }
+},
+</pre>
+</li>
+<li>Test the notification logic by displaying a message when the application store has been initialized: Pass an anonymous callback function as an argument to the constructor of the persistence store (the store will call this function after it has successfully initialized). In the anonymous function, invoke the showAlert() function.
+<pre class="brush: jscript; title: ; notranslate" title="">
+initialize: function() {
+    var self = this;
+    this.store = new MemoryStore(function() {
+        self.showAlert('Store Initialized', 'Info');
+    });
+    $('.search-key').on('keyup', $.proxy(this.findByName, this));
+}
+</pre>
+</li>
+<li>Test the application: When you run the application in the browser, you should see a standard browser alert. When you run the application on your device, you should see a native alert.</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 4: Setting Up a Single Page Application</h2>
+  </div>
+  <div class="content">
+
+A single page application is a web application that lives within a single HTML page. The &#x201C;views&#x201D; of the application are injected into- and removed from the DOM as needed as the user navigates through the app. A single page application architecture is particularly well suited for mobile apps: 
+<ul>
+<li>The absence of continual page refreshes provides a more fluid / closer to native experience.</li>
+<li>The UI is entirely created at the client-side with no dependency on a server to create the UI, making it an ideal architecture for applications that work offline.</li>
+</ul>
+<p>In this section, we set up the basic infrastructure to turn Employee Directory into a single page application.</p>
+<ol>
+<li>In index.html: remove the HTML markup inside the body tag (with the exception of the script tags).</li>
+<li>In main.js, define a function named renderHomeView() inside the app object. Implement the function to programmatically add the Home View markup to the body element.
+<pre class="brush: jscript; title: ; notranslate" title="">
+renderHomeView: function() {
+    var html =
+            "&lt;div class='header'&gt;&lt;h1&gt;Home&lt;/h1&gt;&lt;/div&gt;" +
+            "&lt;div class='search-view'&gt;" +
+            "&lt;input class='search-key'/&gt;" +
+            "&lt;ul class='employee-list'&gt;&lt;/ul&gt;" +
+            "&lt;/div&gt;"
+    $('body').html(html);
+    $('.search-key').on('keyup', $.proxy(this.findByName, this));
+},
+</pre>
+</li>
+<li>Modify the initialize() function of the app object. In the anonymous callback function of the store constructor, call the renderHomeView() function to programmatically display the Home View.
+<pre class="brush: jscript; title: ; notranslate" title="">
+initialize: function() {
+    var self = this;
+    this.store = new MemoryStore(function() {
+        self.renderHomeView();
+    });
+}
+</pre>
+</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 5: Using Handlebar Templates</h2>
+  </div>
+  <div class="content">
+
+<p>Writing HTML fragments in JavaScript and programmatically inserting them into the DOM is tedious. It makes your application harder to write and harder to maintain. HTML templates address this issue by decoupling the UI definition (HTML markup) from your code. There are a number of great HTML template solutions: Mustache.js, Handlebar.js, and Underscore.js to name a few.</p>
+<p>In this section, we create two templates to streamline the code of the Employee Directory application. We use Handlebar.js but the smae result can be achieved using the other HTML template solutions.</p>
+<p>Modify index.html as follows:</p>
+<ol>
+<li>Add a script tag to include the handlebar.js library:
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script src="lib/handlebars.js"&gt;&lt;/script&gt;
+</pre>
+</li>
+<li>Create an HTML template to render the Home View. Add this script tag as the first child of the body tag:
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script id="home-tpl" type="text/x-handlebars-template"&gt;
+    &lt;div class='header'&gt;&lt;h1&gt;Home&lt;/h1&gt;&lt;/div&gt;
+    &lt;div class='search-bar'&gt;&lt;input class='search-key' type="text"/&gt;&lt;/div&gt;
+    &lt;ul class='employee-list'&gt;&lt;/ul&gt;
+&lt;/script&gt;
+</pre>
+</li>
+<li>Create an HTML template to render the employee list items. Add this script tag immediately after the previous one:
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script id="employee-li-tpl" type="text/x-handlebars-template"&gt;
+    {{#.}}
+    &lt;li&gt;&lt;a href="#employees/{{this.id}}"&gt;{{this.firstName}} {{this.lastName}}&lt;br/&gt;{{this.title}}&lt;/a&gt;&lt;/li&gt;
+    {{/.}}
+&lt;/script&gt;
+</pre>
+</li>
+</ol>
+<p>Modify main.js as follows:</p>
+<ol>
+<li>In the initialize() function of the app object, add the code to compile the two templates defined above:
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.homeTpl = Handlebars.compile($("#home-tpl").html());
+this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
+</pre>
+</li>
+<li>Modify renderHomeView() to use the homeTpl template instead of the inline HTML:
+<pre class="brush: jscript; title: ; notranslate" title="">
+renderHomeView: function() {
+    $('body').html(this.homeTpl());
+    $('.search-key').on('keyup', $.proxy(this.findByName, this));
+},
+</pre>
+</li>
+<li>Modify findByName() to use the employeeLiTpl template instead of the inline HTML:
+<pre class="brush: jscript; title: ; notranslate" title="">
+findByName: function() {
+    var self = this;
+    this.store.findByName($('.search-key').val(), function(employees) {
+        $('.employee-list').html(self.employeeLiTpl(employees));
+    });
+},
+</pre>
+</li>
+<li>Test the application.
+</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 6: Creating a View Class</h2>
+  </div>
+  <div class="content">
+
+<p>It&#x2019;s time to provide our application with some structure. If we keep adding all the core functions of the application to the app object, it will very quickly grow out of control. In this section we create a HomeView object that encapsulates the logic to create and render the Home view.</p>
+<h4>Step 1: Create the HomeView Class</h4>
+<ol>
+<li>Create a file called HomeView.js in the js directory, and define a HomeView class implemented as follows:
+<pre class="brush: jscript; title: ; notranslate" title="">
+var HomeView = function(store) {
+
+
+}
+</pre>
+</li>
+<li>Add the two templates as <em>static</em> members of HomeView.
+<pre class="brush: jscript; title: ; notranslate" title="">
+var HomeView = function(store) {
+
+
+}
+
+HomeView.template = Handlebars.compile($("#home-tpl").html());
+HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
+</pre>
+</li>
+<li>Define an initialize() function inside the HomeView class. Define a div wrapper for the view. The div wrapper is used to attach the view-related events. Invoke the initialize() function inside the HomeView constructor function.
+<pre class="brush: jscript; title: ; notranslate" title="">
+var HomeView = function(store) {
+
+    this.initialize = function() {
+        // Define a div wrapper for the view. The div wrapper is used to attach events.
+        this.el = $('&lt;div/&gt;');
+        this.el.on('keyup', '.search-key', this.findByName);
+    };
+
+    this.initialize();
+
+}
+
+HomeView.template = Handlebars.compile($("#home-tpl").html());
+HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
+</pre>
+</li>
+<li>Move the renderHomeView() function from the app object to the HomeView class. To keep the view reusable, attach the html to the div wrapper (this.el) instead of the document body. Because the function is now encapsulated in the HomeView class, you can also rename it from renderHomeView() to just render().
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.render = function() {
+    this.el.html(HomeView.template());
+    return this;
+};
+</pre>
+</li>
+<li>Move the findByName() function from the app object to the HomeView class.
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.findByName = function() {
+    store.findByName($('.search-key').val(), function(employees) {
+        $('.employee-list').html(HomeView.liTemplate(employees));
+    });
+};
+</pre>
+</li>
+</ol>
+<h4>Step 2: Using the HomeView class</h4>
+<ol>
+<li>In index.html, add a script tag to include HomeView.js (just before the script tag for main.js):
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script src="js/HomeView.js"&gt;&lt;/script&gt;
+</pre>
+</li>
+<li>Remove the renderHomeView() function from the app object.</li>
+<li>Remove the findByName() function from the app object.</li>
+<li>Modify the initialize function() to display the Home View using the HomeView class:
+<pre class="brush: jscript; title: ; notranslate" title="">
+initialize: function() {
+    var self = this;
+    this.store = new MemoryStore(function() {
+        $('body').html(new HomeView(self.store).render().el);
+    });
+}
+</pre>
+</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 7: Adding Styles and Touch-Based Scrolling</h2>
+  </div>
+  <div class="content">
+
+<h4>Step 1: Style the Application</h4>
+<ol>
+<li>Add the Source Sans Pro font definition to the head of index.html
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script src="css/source-sans-pro.js"&gt;&lt;/script&gt;
+</pre>
+<p>Source Sans Pro is part of the free <a href="http://html.adobe.com/edge/webfonts/">Adobe Edge Web Fonts</a>.
+</p></li>
+<li>Add styles.css to the head of index.html
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;link href="css/styles.css" rel="stylesheet"&gt;
+</pre>
+</li>
+<li>In index.html, modify the home-tpl template: change the search-key input type from <em>text</em> to <em>search</em>.
+</li>
+<li>Test the application. Specifically, test the list behavior when the list is bigger than the browser window (or the screen)</li>
+</ol>
+<h4>Step 2: Native Scrolling Approach</h4>
+<ol>
+<li>Modify the home-tpl template in index.html. Add a div wrapper with a <em>scroll</em> class around the ul element with a scroll:
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script id="home-tpl" type="text/x-handlebars-template"&gt;
+    &lt;div class='header'&gt;&lt;h1&gt;Home&lt;/h1&gt;&lt;/div&gt;
+    &lt;div class='search-bar'&gt;&lt;input class='search-key' type="search"/&gt;&lt;/div&gt;
+    &lt;div class="scroll"&gt;&lt;ul class='employee-list'&gt;&lt;/ul&gt;&lt;/div&gt;
+&lt;/script&gt;
+</pre>
+</li>
+<li>Add the following class definition to css/styles.css:
+<pre class="brush: css; title: ; notranslate" title="">
+.scroll {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    position: absolute;
+    top: 84px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+</pre>
+</li>
+</ol>
+<p class="woo-sc-box info   ">
+If the platforms you target support touch-based scrolling of fixed regions, this approach is all you need (you can skip step 3 below). If not, you&#x2019;ll need to implement a programmatic approach, typically with the help of a library such as iScroll.<br/>
+</p>
+<h4>Step 3: iScroll Approach</h4>
+<ol>
+<li>Add a script tag to include the iscroll.js library:
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script src="lib/iscroll.js"&gt;&lt;/script&gt;
+</pre>
+</li>
+<li>In HomeView.js, modify the findByName() function: Instantiate an iScroll object to scroll the list of employees returned. If the iScroll object already exists (), simply refresh it to adapt it to the new size of the list.
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.findByName = function() {
+    store.findByName($('.search-key').val(), function(employees) {
+        $('.employee-list').html(HomeView.liTemplate(employees));
+        if (self.iscroll) {
+            console.log('Refresh iScroll');
+            self.iscroll.refresh();
+        } else {
+            console.log('New iScroll');
+            self.iscroll = new iScroll($('.scroll', self.el)[0], {hScrollbar: false, vScrollbar: false });
+        }
+    });
+};
+</pre>
+</li>
+</ol>
+
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 8: Highlighting Tapped or Clicked UI Elements</h2>
+  </div>
+  <div class="content">
+
+<ol>
+<li>In styles.css, add a <em>tappable-active</em> class definition for <em>tapped</em> or <em>clicked</em> list item links. The class simply highlights the item with a blue background:
+<pre class="brush: css; title: ; notranslate" title="">
+li&gt;a.tappable-active {
+    color: #fff;
+    background-color: #4286f5;
+}
+</pre>
+</li>
+<li>In main.js, define a registerEvents() function inside the app object. Add a the <em>tappable_active</em> class to the selected (<em>tapped</em> or <em>clicked</em>) list item:
+<pre class="brush: jscript; title: ; notranslate" title="">
+registerEvents: function() {
+    var self = this;
+    // Check of browser supports touch events...
+    if (document.documentElement.hasOwnProperty('ontouchstart')) {
+        // ... if yes: register touch event listener to change the "selected" state of the item
+        $('body').on('touchstart', 'a', function(event) {
+            $(event.target).addClass('tappable-active');
+        });
+        $('body').on('touchend', 'a', function(event) {
+            $(event.target).removeClass('tappable-active');
+        });
+    } else {
+        // ... if not: register mouse events instead
+        $('body').on('mousedown', 'a', function(event) {
+            $(event.target).addClass('tappable-active');
+        });
+        $('body').on('mouseup', 'a', function(event) {
+            $(event.target).removeClass('tappable-active');
+        });
+    }
+},
+</pre>
+</li>
+<li>Invoke the registerEvents() function from within the app object&#x2019;s initialize() function.
+</li>
+<li>Test the application.
+</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 9: View Routing</h2>
+  </div>
+  <div class="content">
+
+<p>In this section, we add an employee details view. Since the application now has more than one view, we also add a simple view routing mechanism that uses the hash tag to determine whether to display the home view or the details view for a specific employee.</p>
+<h4>Step 1: Create the employee template</h4>
+<p>Open index.html and add a template to render a detailed employee view:</p>
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script id="employee-tpl" type="text/x-handlebars-template"&gt;
+    &lt;div class='header'&gt;&lt;a href='#' class="button header-button header-button-left"&gt;Back&lt;/a&gt;&lt;h1&gt;Details&lt;/h1&gt;&lt;/div&gt;
+    &lt;div class='details'&gt;
+        &lt;img class='employee-image' src='img/{{firstName}}_{{lastName}}.jpg' /&gt;
+        &lt;h1&gt;{{firstName}} {{lastName}}&lt;/h1&gt;
+        &lt;h2&gt;{{title}}&lt;/h2&gt;
+        &lt;span class="location"&gt;&lt;/span&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="tel:{{officePhone}}"&gt;Call Office&lt;br/&gt;{{officePhone}}&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="tel:{{cellPhone}}"&gt;Call Cell&lt;br/&gt;{{cellPhone}}&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="sms:{{cellPhone}}"&gt;SMS&lt;br/&gt;{{cellPhone}}&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/script&gt;
+</pre>
+<h4>Step 2: Create the EmployeeView class</h4>
+<ol>
+<li>Create a file called EmployeeView.js in the js directory, and define an EmployeeView class implemented as follows:
+<pre class="brush: jscript; title: ; notranslate" title="">
+var EmployeeView = function() {
+
+
+}
+</pre>
+</li>
+<li>Add the template as a <em>static</em> member of EmployeeView.
+<pre class="brush: jscript; title: ; notranslate" title="">
+var EmployeeView = function() {
+
+
+}
+
+EmployeeView.template = Handlebars.compile($("#employee-tpl").html());
+</pre>
+</li>
+<li>Define an initialize() function inside the HomeView class. Define a div wrapper for the view. The div wrapper is used to attach the view related events. Invoke the initialize() function inside the HomeView constructor function.
+<pre class="brush: xml; title: ; notranslate" title="">
+var EmployeeView = function(employee) {
+
+    this.initialize = function() {
+        this.el = $('&lt;div/&gt;');
+    };
+
+    this.initialize();
+
+ }
+
+EmployeeView.template = Handlebars.compile($("#employee-tpl").html());
+</pre>
+</li>
+<li>Define a render() function implemented as follows:
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.render = function() {
+    this.el.html(EmployeeView.template(employee));
+    return this;
+};
+</pre>
+</li>
+<li>In index.html, add a script tag to include EmployeeView.js (just before the script tag for main.js):
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;script src="js/EmployeeView.js"&gt;&lt;/script&gt;
+</pre>
+</li>
+</ol>
+<h4>Step 3: Implement View Routing</h4>
+<ol>
+<li>In the app&#x2019;s initialize() function, define a regular expression that matches employee details urls.
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.detailsURL = /^#employees\/(\d{1,})/;
+</pre>
+</li>
+<li>In the app&#x2019;s registerEvents() function, add an event listener to listen to URL hash tag changes:
+<pre class="brush: jscript; title: ; notranslate" title="">
+$(window).on('hashchange', $.proxy(this.route, this));
+</pre>
+</li>
+<li>In the app object, define a route() function to route requests to the appropriate view:
+<ul>
+<li>If there is no hash tag in the URL: display the HomeView</li>
+<li>If there is a has tag matching the pattern for an employee details URL: display an EmployeeView for the specified employee.</li>
+</ul>
+<pre class="brush: jscript; title: ; notranslate" title="">
+route: function() {
+    var hash = window.location.hash;
+    if (!hash) {
+        $('body').html(new HomeView(this.store).render().el);
+        return;
+    }
+    var match = hash.match(app.detailsURL);
+    if (match) {
+        this.store.findById(Number(match[1]), function(employee) {
+            $('body').html(new EmployeeView(employee).render().el);
+        });
+    }
+}
+</pre>
+</li>
+<li>Modify the initialize() function to call the route() function:
+<pre class="brush: jscript; title: ; notranslate" title="">
+initialize: function() {
+    var self = this;
+    this.detailsURL = /^#employees\/(\d{1,})/;
+    this.registerEvents();
+    this.store = new MemoryStore(function() {
+        self.route();
+    });
+}
+</pre>
+</li>
+<li>Test the application.
+</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 10: Using the Location API</h2>
+  </div>
+  <div class="content">
+
+<p>In this section, we add the ability to tag an employee with his/her location information. In this sample application, we display the raw information (longitude/latitude) in the employee view. In a real-life application, we would typically save the location in the database as part of the employee information and show it on a map.</p>
+<p class="woo-sc-box info   ">
+The code below works when running the application as a PhoneGap app on your device. It should also work in Chrome on the desktop when the page is served with the http:// protocol, and in Firefox, regardless of the protocol (http:// or file://).<br/>
+</p>
+<ol>
+<li>In index.html, add the following list item to the employee-tpl template:
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;li&gt;&lt;a href="#" class="add-location-btn"&gt;Add Location&lt;/a&gt;&lt;/li&gt;
+</pre>
+</li>
+<li>In the initialize() function of EmployeeView, register an event listener for the click event of the <em>Add Location</em> list item:
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.el.on('click', '.add-location-btn', this.addLocation);
+</pre>
+</li>
+<li>In EmployeeView, define the <em>addLocation</em> event handler as follows:
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.addLocation = function(event) {
+    event.preventDefault();
+    console.log('addLocation');
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            $('.location', this.el).html(position.coords.latitude + ',' + position.coords.longitude);
+        },
+        function() {
+            alert('Error getting location');
+        });
+    return false;
+};
+</pre>
+</li>
+<li>Test the Application
+</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 11: Using the Contacts API</h2>
+  </div>
+  <div class="content">
+
+<p>In this section, we use the PhoneGap Contacts API to provide the user with the ability to add an employee to the device&#x2019;s contact list.</p>
+<p class="woo-sc-box info   ">
+The code below only works when running the application on your device as a PhoneGap app. In other words, you can&#x2019;t test it in a browser on the desktop.<br/>
+</p>
+<ol>
+<li>In index.html, add the following list item to the employee template:
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;li&gt;&lt;a href="#" class="add-contact-btn"&gt;Add to Contacts&lt;/a&gt;&lt;/li&gt;
+</pre>
+</li>
+<li>In the initialize() function of EmployeeView, register an event listener for the click event of the <em>Add to Contacts</em> list item:
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.el.on('click', '.add-contact-btn', this.addToContacts);
+</pre>
+</li>
+<li>In EmployeeView, define the <em>addToContacts</em> event handler as follows:
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.addToContacts = function(event) {
+    event.preventDefault();
+    console.log('addToContacts');
+    if (!navigator.contacts) {
+        app.showAlert("Contacts API not supported", "Error");
+        return;
+    }
+    var contact = navigator.contacts.create();
+    contact.name = {givenName: employee.firstName, familyName: employee.lastName};
+    var phoneNumbers = [];
+    phoneNumbers[0] = new ContactField('work', employee.officePhone, false);
+    phoneNumbers[1] = new ContactField('mobile', employee.cellPhone, true); // preferred number
+    contact.phoneNumbers = phoneNumbers;
+    contact.save();
+    return false;
+};
+</pre>
+</li>
+<li>Test the Application
+</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 12: Using the Camera API</h2>
+  </div>
+  <div class="content">
+
+<p>In this section, we use the PhoneGap Camera API to provide the user with the ability to take a picture of an employee, and use that picture as the employee&#x2019;s picture in the application. We do not persist that picture in this sample application.</p>
+<p class="woo-sc-box info   ">
+The code below only works when running the application on your device as a PhoneGap app. In other words, you can&#x2019;t test it in a browser on the desktop.<br/>
+</p>
+<ol>
+<li>In index.html, add the following list item to the employee template:
+<pre class="brush: xml; title: ; notranslate" title="">
+&lt;li&gt;&lt;a href="#" class="change-pic-btn"&gt;Change Picture&lt;/a&gt;&lt;/li&gt;
+</pre>
+</li>
+<li>In the initialize() function of EmployeeView, register an event listener for the click event of the Change Picture list item:
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.el.on('click', '.change-pic-btn', this.changePicture);
+</pre>
+</li>
+<li>In EmployeeView, define the changePicture event handler as follows:
+<pre class="brush: jscript; title: ; notranslate" title="">
+this.changePicture = function(event) {
+    event.preventDefault();
+    if (!navigator.camera) {
+        app.showAlert("Camera API not supported", "Error");
+        return;
+    }
+    var options =   {   quality: 50,
+                        destinationType: Camera.DestinationType.DATA_URL,
+                        sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
+                        encodingType: 0     // 0=JPG 1=PNG
+                    };
+
+    navigator.camera.getPicture(
+        function(imageData) {
+            $('.employee-image', this.el).attr('src', "data:image/jpeg;base64," + imageData);
+        },
+        function() {
+            app.showAlert('Error taking picture', 'Error');
+        },
+        options);
+
+    return false;
+};
+</pre>
+</li>
+<li>Test the Application
+</li>
+</ol>
+
+</div>
+</div><div class="tutorial-section">
+  <div class="title">
+    <h2>Part 13: Sliding Pages with CSS Transitions</h2>
+  </div>
+  <div class="content">
+
+<ol>
+<li>Add the following classes to styles.css:
+<pre class="brush: css; title: ; notranslate" title="">
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-transform:translate3d(0,0,0);
+}
+
+.stage-center {
+    top: 0;
+    left: 0;
+}
+
+.stage-left {
+    left: -100%;
+}
+
+.stage-right {
+    left: 100%;
+}
+
+.transition {
+    -moz-transition-duration: .375s;
+    -webkit-transition-duration: .375s;
+    -o-transition-duration: .375s;
+}
+</pre>
+</li>
+<li>Inside the app object, define a slidePage() function implemented as follows:
+<pre class="brush: jscript; title: ; notranslate" title="">
+slidePage: function(page) {
+
+    var currentPageDest,
+        self = this;
+
+    // If there is no current page (app just started) -&gt; No transition: Position new page in the view port
+    if (!this.currentPage) {
+        $(page.el).attr('class', 'page stage-center');
+        $('body').append(page.el);
+        this.currentPage = page;
+        return;
+    }
+
+    // Cleaning up: remove old pages that were moved out of the viewport
+    $('.stage-right, .stage-left').not('.homePage').remove();
+
+    if (page === app.homePage) {
+        // Always apply a Back transition (slide from left) when we go back to the search page
+        $(page.el).attr('class', 'page stage-left');
+        currentPageDest = "stage-right";
+    } else {
+        // Forward transition (slide from right)
+        $(page.el).attr('class', 'page stage-right');
+        currentPageDest = "stage-left";
+    }
+
+    $('body').append(page.el);
+
+    // Wait until the new page has been added to the DOM...
+    setTimeout(function() {
+        // Slide out the current page: If new page slides from the right -&gt; slide current page to the left, and vice versa
+        $(self.currentPage.el).attr('class', 'page transition ' + currentPageDest);
+        // Slide in the new page
+        $(page.el).attr('class', 'page stage-center transition');
+        self.currentPage = page;
+    });
+
+},
+</pre>
+</li>
+<li>Modify the route() function as follows:
+<pre class="brush: jscript; title: ; notranslate" title="">
+route: function() {
+    var self = this;
+    var hash = window.location.hash;
+    if (!hash) {
+        if (this.homePage) {
+            this.slidePage(this.homePage);
+        } else {
+            this.homePage = new HomeView(this.store).render();
+            this.slidePage(this.homePage);
+        }
+        return;
+    }
+    var match = hash.match(this.detailsURL);
+    if (match) {
+        this.store.findById(Number(match[1]), function(employee) {
+            self.slidePage(new EmployeeView(employee).render());
+        });
+    }
+},
+</pre>
+</li>
+</ol>
+	</div>
 </div><div id="todo-editor">
                      <%= label_tag "Select Language: " %>
                      <select id="lang">
@@ -163,14 +827,18 @@ timestamp
                         <option value="python">Python</option>
                         <option value="java">Java</option>
                      </select> 
-                     <div id="editor">function foo(items) {
-                        var x = "All this is syntax highlighted"
-                        return x;
-                       }</div><br>
+                     <div id="editor">
+
+                      def fibonacci(n)
+                        n <= 1 ? n :  fibonacci( n - 1 ) + fibonacci( n - 2 ) 
+                      end
+
+                      puts fibonacci( 10 )
+
+                      </div><br>
                       <%= label_tag :input %><br>
                       <%= text_area_tag :input %><br>
-                      <%= label_tag :outpute %><br>
+                      <%= label_tag :output %><br>
                       <%= text_area_tag :output, @output %><br>
                       <%= submit_tag "Execute", id: "code-submit"%>
-                       
                   </div>

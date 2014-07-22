@@ -20,7 +20,8 @@ Rails.application.routes.draw do
 
   post 'register' => 'registration#create'
   get 'register' => 'registration#new'
-
+  
+  get '/sessions/destroy' => 'sessions#destroy'
   # resources :users
 
   resources :sessions

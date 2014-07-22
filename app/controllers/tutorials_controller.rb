@@ -34,10 +34,16 @@ class TutorialsController < ApplicationController
     @tutorial.content = doc.content
     @tutorial.title = doc.search('#rdb-article-title').text
     @tutorial.save
-      
+
+    @user = User.find_by_username(session[:username])
+    tu = TutorialsUsers.new
+    tu.tutorial_id = @tutorial.id
+    tu.user_id = @user.id
+    tu.save
+
     render 'show'
   end
-  
+
   private
 
   def tutorial_params
@@ -47,9 +53,9 @@ class TutorialsController < ApplicationController
   def sectionize_tutorial
     page = Sectionizer.new params[:url]
     sections = page.sectionize
- 
+
     File.open('app/views/tutorials/show.html.erb', 'w') do |file|
-      file.write "<%= button_tag 'Show editor', id: 'editor-button' %>"
+      file.write "<%= button_tag 'Show editor', :class => 'btn btn-primary', id: 'editor-button' %>"
       file.write sections[:title] 
       #binding.pry
       sections.each_key do |key|
@@ -66,16 +72,20 @@ class TutorialsController < ApplicationController
                         <option value="python">Python</option>
                         <option value="java">Java</option>
                      </select> 
-                     <div id="editor">function foo(items) {
-                        var x = "All this is syntax highlighted"
-                        return x;
-                       }</div><br>
+                     <div id="editor">
+
+                      def fibonacci(n)
+                        n <= 1 ? n :  fibonacci( n - 1 ) + fibonacci( n - 2 ) 
+                      end
+                      
+                      puts fibonacci( 10 )
+
+                      </div><br>
                       <%= label_tag :input %><br>
                       <%= text_area_tag :input %><br>
-                      <%= label_tag :outpute %><br>
+                      <%= label_tag :output %><br>
                       <%= text_area_tag :output, @output %><br>
                       <%= submit_tag "Execute", id: "code-submit"%>
-                       
                   </div>'
                   )
     end
@@ -88,7 +98,7 @@ class TutorialsController < ApplicationController
                  ruby: ['.rb', "ruby tmp/programs/program.rb"], 
                  python: ['.py', "python tmp/programs/program.py"], 
                  c: ['.c', "gcc program.c -o a.out"] }
-    
+
     if languages.has_key? language
       File.open("tmp/programs/program#{languages[language][0]}", 'w') do |file|
         file.write code
