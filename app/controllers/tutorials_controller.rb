@@ -31,9 +31,9 @@ class TutorialsController < ApplicationController
     #binding.pry
     f.close
     binding.pry 
-    #@tutorial.content = doc.content
-    #@tutorial.title = doc.search('#rdb-article-title')
-    #@tutorial.save
+    @tutorial.content = doc.content
+    @tutorial.title = doc.search('#rdb-article-title').text
+    @tutorial.save
       
     render 'show'
   end
